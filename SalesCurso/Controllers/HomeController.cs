@@ -20,6 +20,7 @@ namespace SalesCurso.Controllers
 
         public IActionResult Privacy()
         {
+            ViewData["Message"] = "Pega na minha e balança!";
             return View();
         }
 
