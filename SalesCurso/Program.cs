@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using SalesCurso.Data;
+using System.Configuration;
 
 namespace SalesCurso
 {
@@ -11,8 +12,13 @@ namespace SalesCurso
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            // Configurando o DbContext com MySQL e definindo a versão do servidor
             builder.Services.AddDbContext<SalesCursoContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("SalesCursoContext") ?? throw new InvalidOperationException("Connection string 'SalesCursoContext' not found.")));
+            {
+                var connectionString = builder.Configuration.GetConnectionString("SalesCursoContext");
+                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            });
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
