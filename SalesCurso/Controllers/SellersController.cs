@@ -103,7 +103,7 @@ namespace SalesWebMvc.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit (int id, Seller seller)
+        public IActionResult Edit(int id, Seller seller)
         {
             if (id != seller.Id)
             {
@@ -111,15 +111,10 @@ namespace SalesWebMvc.Controllers
             }
             try
             {
-            _sellerService.Update(seller);
-            return RedirectToAction(nameof(Index));
-
+                _sellerService.Update(seller);
+                return RedirectToAction(nameof(Index));
             }
-            catch (NotFoundException e)
-            {
-                return RedirectToAction(nameof(Error), new { message = e.Message });
-            }
-            catch (DbConcurrencyException e)
+            catch (ApplicationException e)
             {
                 return RedirectToAction(nameof(Error), new { message = e.Message });
             }
